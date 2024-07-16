@@ -38,10 +38,10 @@ router.route('/createResetSession').get(controller.createResetSession)
 //PUT methods
 
 //to update the user profile
-router.route('/updateUser').put()
+router.route('/updateUser').put(controller.updateUser)
 
 //to reset password
-router.route('/resetPassword').put()
+router.route('/resetPassword').put(controller.resetPassword)
 
 
 
