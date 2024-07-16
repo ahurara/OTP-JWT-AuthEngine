@@ -3,7 +3,7 @@ const router = Router();
 
 //import all controller
 import * as controller from '../controller/appController.js'
-
+import { Auth, localVariables } from "../middleware/auth.js";
 
 //POST methods
 
@@ -17,7 +17,7 @@ router.route('/registerMail').post((req, res)=>{ res.json('register route')})
 router.route('/authenticate').post((req, res)=>{res.json('register route')})
 
 //login to the app
-router.route('/login').post(controller.login)
+router.route('/login').post(controller.verifyUser,controller.login)
 
 
 //GET methods
@@ -26,7 +26,7 @@ router.route('/login').post(controller.login)
 router.route('/user/:username').get(controller.getUser)
 
 //generate random OTP
-router.route('/generateOTP').get(controller.generateOTP)
+router.route('/generateOTP').get(controller.verifyUser,localVariables,controller.generateOTP)
 
 // verify generated OTP
 router.route('/verifyOTP').get(controller.verifyOTP)
@@ -38,7 +38,7 @@ router.route('/createResetSession').get(controller.createResetSession)
 //PUT methods
 
 //to update the user profile
-router.route('/updateUser').put(controller.updateUser)
+router.route('/updateUser').put(Auth,controller.updateUser)
 
 //to reset password
 router.route('/resetPassword').put(controller.resetPassword)
