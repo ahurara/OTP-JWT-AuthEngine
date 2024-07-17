@@ -4,6 +4,7 @@ const router = Router();
 //import all controller
 import * as controller from '../controller/appController.js'
 import { Auth, localVariables } from "../middleware/auth.js";
+import { registerMail } from "../controller/mailer.js";
 
 //POST methods
 
@@ -11,7 +12,7 @@ import { Auth, localVariables } from "../middleware/auth.js";
 router.route('/register').post(controller.register)
 
 //send the mail
-router.route('/registerMail').post((req, res)=>{ res.json('register route')})
+router.route('/registerMail').post(registerMail)
 
 //authenticate the users
 router.route('/authenticate').post((req, res)=>{res.json('register route')})
@@ -41,7 +42,7 @@ router.route('/createResetSession').get(controller.createResetSession)
 router.route('/updateUser').put(Auth,controller.updateUser)
 
 //to reset password
-router.route('/resetPassword').put(controller.resetPassword)
+router.route('/resetPassword').put(controller.verifyUser,controller.resetPassword)
 
 
 

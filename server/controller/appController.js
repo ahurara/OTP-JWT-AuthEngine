@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ENV from "../config.js";
 import otpGenerator from "otp-generator";
+import userModel from "../model/user.model.js";
 
 //middleware to verify the user
 export async function verifyUser(req, res, next) {
@@ -195,11 +196,38 @@ export async function verifyOTP(req, res) {
 //redirect user when OTP is valid
 /** GET : https://localhost:8000/getUser/createResetSession*/
 export async function createResetSession(req, res) {
-  res.json("createResetSession route");
+  if(req.app.locals.resetSession){
+    req.app.locals.resetSession=false; //allow access to this route once
+    return res.status(201).send({msg :'Access Granted'})
+  }return res.status(400).send({error : 'Session Expired'})
 }
 
 //update the password when we have a valid session
-/** PUT : https://localhost:8000/getUser/resetPassword*/
+/** PUT : https://localhost:8000/resetPassword*/
 export async function resetPassword(req, res) {
-  res.json("resetPassword route");
+ try {
+  if(!req.app.locals.resetSession)return res.status(400).send({error : 'Session Expired'})
+  const {username , password} = req.body;
+
+  try {
+    userModel.findOne({username})
+    .then(user=>
+      bcrypt.hash(password ,10)
+      .then(hashedPassword=>{
+        userModel.updateOne({username : user.username},{password : hashedPassword})
+        req.app.locals.resetSession=false; //allow access to thid route once
+      return res.status(201).send({msg :'Record updated'})}
+      )
+      .catch(error=>{return res.status(500).send({error : 'Unable to hash the password'})})
+    )
+    .catch(error=>{return res.status(404).send({error:"User not found"})})
+    
+  } catch (error) {
+    return res.status(500).send(error.message)
+  }
+
+  
+ } catch (error) {
+  return res.status(401).send(error.message)
+ }
 }
