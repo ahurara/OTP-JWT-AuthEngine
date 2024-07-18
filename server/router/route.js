@@ -15,7 +15,7 @@ router.route('/register').post(controller.register)
 router.route('/registerMail').post(registerMail)
 
 //authenticate the users
-router.route('/authenticate').post((req, res)=>{res.json('register route')})
+router.route('/authenticate').post(controller.verifyUser,(req, res)=>{res.end()})
 
 //login to the app
 router.route('/login').post(controller.verifyUser,controller.login)
@@ -30,7 +30,7 @@ router.route('/user/:username').get(controller.getUser)
 router.route('/generateOTP').get(controller.verifyUser,localVariables,controller.generateOTP)
 
 // verify generated OTP
-router.route('/verifyOTP').get(controller.verifyOTP)
+router.route('/verifyOTP').get(controller.verifyUser,controller.verifyOTP)
 
 //reset all the variables
 router.route('/createResetSession').get(controller.createResetSession)
