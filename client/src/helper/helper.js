@@ -1,6 +1,6 @@
 import axios from "axios";
-
-axios.defaults.baseURL = process.env.REACT_APP_SERVR_DOMAIN;
+axios.defaults.baseURL = import.meta.env.VITE_SERVER_DOMAIN;
+  
 
 // Make Api request
 

@@ -1,13 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link ,useNavigate} from "react-router-dom";
 import avatar from  '../assets/avatar.png';
 import styles from  '../styles/Username.module.css';
 import { Toaster } from "react-hot-toast";
 import { useFormik } from "formik";
 import { usernameValidate } from "../helper/validate";
+import { useAuthStore } from "../store/store";
 
 const UserName = () => {
+  
 
+  const navigate = useNavigate();
+
+  const setUsername =useAuthStore(state =>state.setUsername)
     const formik = useFormik({
         initialValues :{
             username :''
@@ -15,11 +20,14 @@ const UserName = () => {
         validate:usernameValidate,
         validateOnBlur:false,
         validateOnChange:false,
-        onSubmit: async value =>{ console.log(value)}
+        onSubmit: async value =>{ 
+          setUsername(value.username)
+          navigate("/password")
+        }
     })
   return (
     <>
-      <div className="container mx-auto">
+      <div className="container mx-auto my-30">
       <Toaster position="top-center" reverseOrder={false}></Toaster>
         <div className=" flex justify-center items-center h-screen">
           <div className={styles.glass}>
