@@ -18,6 +18,7 @@ export default function useFetch(query) {
     const fetchData = async () => {
       try {
         setData((prev) => ({ ...prev, isLoading: true }));
+        getUsername();
         const { data, status } = await axios.get(`/api${query}`);
 
         if (status === 200) {

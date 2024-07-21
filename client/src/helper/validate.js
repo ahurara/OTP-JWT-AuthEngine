@@ -51,18 +51,16 @@ function passwordVerify(error=[] ,values){
 }
 
 // validate email
-function emailVerify(error=[],values){
-
-    if(!values.email){
-        error.email =toast.error("Email required...!")
-    }else if(values.email.includes('')){
-        error.email =toast.error("Wrong Email ")
-    }else if( !/^[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(values.email)){
-        error.email =toast.error("Invalid Email address")
+function emailVerify(error = [], values) {
+    if (!values.email) {
+        error.email = toast.error("Email required...!");
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/i.test(values.email)) {
+        error.email = toast.error("Invalid Email address");
     }
 
-return error;
+    return error;
 }
+
 
 
 // validate Reset password
